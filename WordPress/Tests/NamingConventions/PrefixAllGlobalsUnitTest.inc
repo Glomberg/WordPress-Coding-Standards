@@ -199,3 +199,29 @@ $something = 'abc'; // WPCS: prefix ok.
 // Executing a WP core action or filter is sometimes ok.
 do_action( 'set_current_user' ); // WPCS: prefix ok.
 apply_filters( 'excerpt_edit_pre', $var ); // WPCS: prefix ok.
+
+/*
+ * OK/Bad - backfilled PHP functions will be recognized depending on the PHP version PHPCS runs on
+ * and the extensions loaded in that version.
+ */
+if ( ! function_exists( 'mb_strpos' ) ) {
+	// Fill in for a PHP function which is not always available (extension needs to be loaded).
+	function mb_strpos() {
+		// Some code.
+    }
+}
+
+if ( ! function_exists( 'array_column' ) ) {
+	// Fill in for a PHP function which is not always available - introduced in PHP 5.5.
+	function array_column() {
+		// Some code.
+    }
+}
+
+if ( ! defined( 'E_DEPRECATED' ) ) {
+	define( 'E_DEPRECATED', true ); // Introduced in PHP 5.3.0.
+}
+
+if ( ! class_exists( 'IntlTimeZone' ) ) {
+	class IntlTimeZone {} // Introduced in PHP 5.5.0.
+}
